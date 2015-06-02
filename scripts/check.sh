@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # removes http/https
 host="$( echo "$1" | sed -E 's#^https?://##' )"
