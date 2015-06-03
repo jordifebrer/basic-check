@@ -3,10 +3,17 @@
 # removes http/https
 host="$( echo "$1" | sed -E 's#^https?://##' )"
 
-# checks if a host is reachable
-if ping -c 1 $host &> /dev/null
+# if the port is specified does a service check otherwise checks if the host is reachable
+if [[ $host == *":"* ]]
 then
-	echo ";-)"
+    # returns the HTTP response code
+    curl -sL -w "%{http_code}\\n" "$host" -o /dev/null
 else
-	echo ":-("
+    # checks if a host is reachable
+    if ping -c 1 $host &> /dev/null
+    then
+        echo ";-)"
+    else
+        echo ":-( IP not reachable"
+    fi
 fi
